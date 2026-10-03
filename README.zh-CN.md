@@ -1,10 +1,12 @@
 # DevScope
 
+[![CI](https://github.com/Carlos-CJC/devscope/actions/workflows/ci.yml/badge.svg)](https://github.com/Carlos-CJC/devscope/actions/workflows/ci.yml)
+
 > 面向本机开发环境的终端状态面板 —— 不在项目里时看这台机器,进入项目后看环境是否就绪。
 
 [English](README.md) | **中文**
 
-> ⚠️ **早期阶段。** 目前只实现了 Go 工具链这一条纵向切片,详见[状态](#状态)。
+> ⚠️ **早期阶段。** Machine Scope(本机系统面板,macOS)与 Project Scope 的 Go 检查已可用,详见[状态](#状态)。
 
 ## 这是什么
 
@@ -23,14 +25,16 @@ DevScope **不是** `btop`、`lazygit` 或 `lazydocker` 的替代品,它回答�
 
 | 模块 | 状态 |
 |---|---|
-| CLI:`devscope` / `info` / `check` | ✅ |
+| CLI:`devscope` / `info` / `check` / `port` | ✅ |
+| Machine Scope:CPU / 内存 / 磁盘 / 网络(macOS) | ✅ |
+| Machine Scope:开发工具(Git、Go)+ 服务(sshd、Docker) | ✅ |
+| `devscope port`:经 `lsof` 列出监听端口 | ✅ |
 | Go:项目识别(`go.mod`)+ 版本需求解析 | ✅ |
 | Go:环境侦测(已装/激活版本,识别 asdf) | ✅ |
 | Go:版本检查 → PASS/FAIL/WARN/SKIP + 汇总 | ✅ |
-| `devscope port` | 🚧 占位 |
-| 其它工具(Git / Python / Docker / LaTeX / PlatformIO) | ⬜ 计划中 |
+| 其它工具(Python / Docker / LaTeX / PlatformIO)侦测 | ⬜ 计划中 |
 | TUI(Bubble Tea / Lip Gloss) | ⬜ 计划中 |
-| Linux 后端 | ⬜ 计划中 |
+| Linux 后端(当前指标诚实降级为 SKIP) | ⬜ 计划中 |
 
 ## 安装
 
@@ -54,20 +58,37 @@ go build -o devscope ./cmd/devscope
 devscope          # 机器 / 项目概况
 devscope info     # 查看项目要求(不执行检查)
 devscope check    # 检查当前环境是否满足要求
-devscope port     # 监听端口(尚未实现)
+devscope port     # 监听端口(macOS,经 lsof)
 ```
 
 ### `devscope` —— Machine / Project Scope
 
 ```
-DevScope
+DevScope  my-mac
 
-PROJECT
-  name          devscope
-  type          Go
+SYSTEM
+
+  CPU     Apple M4  10 核
+          ███░░░░░░░░░░░░░░░░░░░░░  13%
+  LOAD    2.34  1.71  1.53
+
+  MEMORY  9.2 GB / 16.0 GB
+          ██████████████░░░░░░░░░░  58%
+
+  STORAGE
+  System          17.1 GB / 228 GB   █░░░░░░░░░░░░  7%
+  /Volumes/Data   2.1 GB / 931 GB    ░░░░░░░░░░░░░  <1%
+
+  NETWORK
+  en1             ↓ 18.9 KB/s   ↑ 99.9 KB/s
 
 DEVELOPMENT
-  ✓ Go  1.22.0  (asdf)
+  ✓ Git    2.54.0  (system)
+  ✓ Go     1.22.0  (asdf)
+
+SERVICES
+  ○ sshd       未监听
+  ○ Docker     未运行
 ```
 
 ### `devscope info`
@@ -133,6 +154,8 @@ ui → check → project / services / environment → system → versionmanager 
 ```
 cmd/devscope/             CLI 入口
 internal/domain/          纯数据类型(零依赖)
+internal/system/          系统指标采集(macOS 后端)
+internal/services/        服务与监听端口
 internal/versionmanager/  版本管理器侦测(asdf)
 internal/environment/     开发工具状态侦测
 internal/project/         项目识别与需求解析
@@ -142,8 +165,7 @@ internal/check/           检查引擎
 
 ## 路线图
 
-- [ ] `devscope port`
-- [ ] Git / Python / Docker / LaTeX / PlatformIO 侦测
+- [ ] Python / Docker / LaTeX / PlatformIO 侦测
 - [ ] 上述工具的 `check`
 - [ ] TUI(Bubble Tea / Lip Gloss)
 - [ ] Linux 后端
