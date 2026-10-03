@@ -4,44 +4,28 @@ package environment
 
 import (
 	"context"
-	"os/exec"
 	"strings"
 
 	"github.com/Carlos-CJC/devscope/internal/domain"
 	"github.com/Carlos-CJC/devscope/internal/versionmanager"
 )
 
+var goSpec = spec{
+	name:        "Go",
+	command:     "go",
+	plugin:      versionmanager.PluginGo,
+	versionArgs: []string{"version"},
+	parse:       parseGoVersion,
+}
+
 // DetectGo 侦测 Go 的安装位置、版本管理器与当前生效版本。
 func DetectGo(ctx context.Context, run versionmanager.Runner) domain.ToolVersion {
-	path, _ := exec.LookPath("go")
-	return detectGoWith(ctx, run, path)
+	return detect(ctx, run, goSpec, lookPath("go"))
 }
 
 // detectGoWith 是 DetectGo 的核心实现,path 由调用方解析以便测试。
 func detectGoWith(ctx context.Context, run versionmanager.Runner, path string) domain.ToolVersion {
-	info := domain.ToolVersion{Name: "Go", Command: "go", Manager: "unknown", Path: path}
-
-	switch {
-	case versionmanager.IsASDFShim(path):
-		info.Manager = versionmanager.ManagerASDF
-		if versions, err := versionmanager.Installed(ctx, run, versionmanager.PluginGo); err == nil {
-			info.Installed = versions
-		}
-		if v, src, err := versionmanager.ActiveVersion(ctx, run, versionmanager.PluginGo); err == nil {
-			info.Active, info.Source = v, src
-		}
-	case path != "":
-		info.Manager = "system"
-	}
-
-	// 命令可实际执行时,读取运行时版本。
-	if out, err := run(ctx, "go", "version"); err == nil {
-		info.Available = true
-		if info.Active == "" {
-			info.Active = parseGoVersion(out)
-		}
-	}
-	return info
+	return detect(ctx, run, goSpec, path)
 }
 
 // parseGoVersion 从 `go version` 输出中取出语义版本。

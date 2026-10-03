@@ -16,6 +16,9 @@ const ManagerASDF = "asdf"
 // PluginGo 是 Go 在 asdf 中的插件名。
 const PluginGo = "golang"
 
+// PluginGit 是 Git 在 asdf 中的插件名。
+const PluginGit = "git"
+
 // 激活版本以 "*" 前缀标记;未设置版本时版本列显示为 "______"。
 const (
 	activeMarker = "*"

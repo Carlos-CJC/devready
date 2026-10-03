@@ -74,12 +74,17 @@ func runDashboard(ctx context.Context, dir string) {
 
 	renderSystem(st)
 
-	goInfo := environment.DetectGo(ctx, versionmanager.ExecRunner)
 	fmt.Println("DEVELOPMENT")
-	fmt.Printf("  %s Go  %s\n", toolMark(goInfo), versionLabel(goInfo))
+	fmt.Println(toolLine(environment.DetectGit(ctx, versionmanager.ExecRunner)))
+	fmt.Println(toolLine(environment.DetectGo(ctx, versionmanager.ExecRunner)))
 	fmt.Println()
 
 	renderServices(ctx)
+}
+
+// toolLine 渲染一行开发工具状态,如 "  ✓ Go     1.22.0  (asdf)"。
+func toolLine(t domain.ToolVersion) string {
+	return fmt.Sprintf("  %s %-6s %s", toolMark(t), t.Name, versionLabel(t))
 }
 
 // renderServices 渲染 Machine Scope 的 SERVICES 区块(§7),数据来自监听端口与本机事实。
