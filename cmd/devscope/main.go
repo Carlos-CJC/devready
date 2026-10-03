@@ -77,7 +77,11 @@ func runInfo(dir string) {
 		return
 	}
 	for _, r := range proj.Requirements {
-		fmt.Printf("  %-10s >= %s   (%s)\n", r.Name, r.Version, r.Source)
+		req := "required"
+		if r.Version != "" {
+			req = ">= " + r.Version
+		}
+		fmt.Printf("  %-16s %s   (%s)\n", r.Name, req, r.Source)
 	}
 }
 
