@@ -1,6 +1,6 @@
 // Package versionmanager 侦测工具由哪个版本管理器管理,并解析其版本状态。
 //
-// 目前仅支持 asdf(其 Go 重写版 0.19 使用 `asdf set` 等新语法)。
+// 目前支持 asdf(其 Go 重写版 0.19 使用 `asdf set` 等新语法)与 pyenv。
 // 解析函数均为纯函数,便于单测;外部命令通过 Runner 注入。
 package versionmanager
 
