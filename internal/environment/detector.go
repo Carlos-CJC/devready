@@ -39,6 +39,10 @@ func detect(ctx context.Context, run versionmanager.Runner, sp spec, path string
 		if v, src, err := versionmanager.PyenvActive(ctx, run); err == nil {
 			info.Active, info.Source = v, src
 		}
+		if info.Active == "" {
+			// pyenv 已装但未激活具体版本,shim 回落到系统 Python,不应标为 pyenv。
+			info.Manager = "system"
+		}
 	case path != "":
 		info.Manager = "system"
 	}

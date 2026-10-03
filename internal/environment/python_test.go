@@ -44,8 +44,8 @@ func TestDetectPythonPyenvActive(t *testing.T) {
 }
 
 func TestDetectPythonPyenvFallsBackToSystem(t *testing.T) {
-	// pyenv 已装但未激活具体版本:Active 取 python3 实际解析出的版本,
-	// Installed 仍如实列出 pyenv 中已安装的版本。
+	// pyenv 已装但未激活具体版本:shim 回落到系统 Python,Manager 记为 system;
+	// Installed 仍如实列出 pyenv 中已安装的版本,供 check 提示。
 	run := fakeRunner(map[string]string{
 		"pyenv versions --bare": "3.12.0\n",
 		"pyenv version":         "system (set by /Users/x/.pyenv/version)\n",
@@ -53,8 +53,8 @@ func TestDetectPythonPyenvFallsBackToSystem(t *testing.T) {
 	})
 	got := detect(context.Background(), run, pythonSpec, "/Users/x/.pyenv/shims/python3")
 
-	if got.Manager != versionmanager.ManagerPyenv {
-		t.Errorf("Manager = %q, want pyenv", got.Manager)
+	if got.Manager != "system" {
+		t.Errorf("Manager = %q, want system", got.Manager)
 	}
 	if got.Active != "3.9.6" {
 		t.Errorf("Active = %q, want 3.9.6", got.Active)
