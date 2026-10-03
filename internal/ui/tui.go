@@ -65,7 +65,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m model) View() string {
 	if !m.ready {
-		return "\n  " + styleDim.Render("DevScope  正在采集…") + "\n"
+		return "\n  " + styleDim.Render("DevReady  正在采集…") + "\n"
 	}
 	return Render(m.snap) + "\n" + m.footer() + "\n"
 }

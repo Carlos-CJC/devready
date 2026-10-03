@@ -51,7 +51,7 @@ func Collect(ctx context.Context, dir string) Snapshot {
 	return snap
 }
 
-// RunDashboard 是 `devscope` 的入口:终端里跑实时刷新 TUI,非终端(管道/重定向)降级为纯文本。
+// RunDashboard 是 `devready` 的入口:终端里跑实时刷新 TUI,非终端(管道/重定向)降级为纯文本。
 func RunDashboard(ctx context.Context, dir string) error {
 	snap := Collect(ctx, dir)
 
@@ -71,7 +71,7 @@ func isTerminal(f *os.File) bool { return term.IsTerminal(int(f.Fd())) }
 func Render(snap Snapshot) string {
 	var b strings.Builder
 
-	b.WriteString(styleTitle.Render("DevScope"))
+	b.WriteString(styleTitle.Render("DevReady"))
 	if snap.System.Hostname != "" {
 		b.WriteString("  " + snap.System.Hostname)
 	}

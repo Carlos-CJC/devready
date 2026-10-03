@@ -47,13 +47,13 @@ func main() {
 }
 
 func usage() {
-	fmt.Print(`DevScope
+	fmt.Print(`DevReady
 
 用法:
-  devscope          实时面板(终端内每 2 秒刷新,按 q 退出)
-  devscope info     查看项目环境要求
-  devscope check    检查当前环境是否满足项目要求
-  devscope port     查看监听端口
+  devready          实时面板(终端内每 2 秒刷新,按 q 退出)
+  devready info     查看项目环境要求
+  devready check    检查当前环境是否满足项目要求
+  devready port     查看监听端口
 `)
 }
 
