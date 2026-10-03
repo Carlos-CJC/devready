@@ -166,4 +166,3 @@ func versionLabel(t domain.ToolVersion) string {
 	}
 	return label
 }
-
