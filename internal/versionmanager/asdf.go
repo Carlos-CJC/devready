@@ -43,8 +43,8 @@ func IsASDFShim(path string) bool {
 // ParseList 解析 `asdf list <plugin>` 的输出,返回已安装版本。
 // 输出形如:
 //
-//	 *1.22.0
-//	  1.20.0
+//	*1.22.0
+//	 1.20.0
 func ParseList(out string) []string {
 	var versions []string
 	for _, line := range strings.Split(out, "\n") {
