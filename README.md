@@ -1,23 +1,25 @@
-# DevScope
+# DevReady
 
-[![CI](https://github.com/Carlos-CJC/devscope/actions/workflows/ci.yml/badge.svg)](https://github.com/Carlos-CJC/devscope/actions/workflows/ci.yml)
+[![CI](https://github.com/Carlos-CJC/devready/actions/workflows/ci.yml/badge.svg)](https://github.com/Carlos-CJC/devready/actions/workflows/ci.yml)
 
-> A terminal panel for your local dev machine — see the machine when you're not inside a project, and see whether a project's environment is ready when you are.
+> **Can this machine run this project, right now?** DevReady answers that one question.
 
 **English** | [中文](README.zh-CN.md)
 
-> ⚠️ **Early stage.** The Machine Scope panel (macOS) and the Go / Python / Docker / PlatformIO checks in Project Scope work today. See [Status](#status).
+> ⚠️ **Early stage.** The readiness check (Project Scope) and the machine panel (Machine Scope, macOS) work today. See [Status](#status).
 
 ## What it is
 
-DevScope is **not** a replacement for `btop`, `lazygit`, or `lazydocker`. It answers a different question:
+DevReady is **not** a replacement for `btop`, `lazygit`, or `lazydocker`. Those show you what a machine is doing. DevReady answers a narrower, more actionable question:
 
-> What state is this dev machine in right now — and once I'm inside a project, does the environment satisfy what that project needs?
+> This project is sitting in front of me — can I run it here, or is something missing?
+
+`cd` into a project and it reads what the project needs, checks it against what's actually installed and active on this machine, and tells you whether you're good to go. Step outside a project and it shows the machine's state instead — the context behind that verdict.
 
 It picks one of two scopes based on your current directory:
 
-- **Machine Scope** — you're not in a project. `devscope` shows CPU, memory, disk, network, installed dev tools, services and listening ports.
-- **Project Scope** — you're inside a project. DevScope detects the project type, then lets you inspect requirements (`info`) and verify the environment (`check`).
+- **Project Scope** — you're inside a project. DevReady detects the project type, then lets you inspect what it needs (`info`) and get the verdict (`check`).
+- **Machine Scope** — you're not in a project. `devready` shows CPU, memory, disk, network, installed dev tools, services and listening ports — what's on the machine, ready to be judged against a project.
 
 > Note: CLI output is currently written in **Chinese**. English output / i18n is planned.
 
@@ -27,10 +29,10 @@ Early and in progress. What works today:
 
 | Area | Status |
 |---|---|
-| CLI: `devscope` / `info` / `check` / `port` | ✅ |
+| CLI: `devready` / `info` / `check` / `port` | ✅ |
 | Machine Scope: CPU / memory / disk / network (macOS) | ✅ |
 | Machine Scope: dev tools (Git, Go, Python, Docker, Docker Compose, LaTeX) + services | ✅ |
-| `devscope port`: listening ports via `lsof` | ✅ |
+| `devready port`: listening ports via `lsof` | ✅ |
 | Go: project detection (`go.mod`) + version requirement parsing | ✅ |
 | Go: environment detection (installed / active version, asdf-aware) | ✅ |
 | Python: project detection (`pyproject.toml` / `requirements.txt`) + env markers | ✅ |
@@ -47,75 +49,29 @@ Early and in progress. What works today:
 Requires Go 1.22+.
 
 ```bash
-go install github.com/Carlos-CJC/devscope/cmd/devscope@latest
+go install github.com/Carlos-CJC/devready/cmd/devready@latest
 ```
 
 Or from source:
 
 ```bash
-git clone https://github.com/Carlos-CJC/devscope
-cd devscope
-go build -o devscope ./cmd/devscope
+git clone https://github.com/Carlos-CJC/devready
+cd devready
+go build -o devready ./cmd/devready
 ```
 
 ## Usage
 
 ```bash
-devscope          # live panel (refreshes every 2s, q to quit)
-devscope info     # show project requirements (does not check)
-devscope check    # check the environment against requirements
-devscope port     # listening ports (macOS, via lsof)
+devready          # live machine panel (refreshes every 2s, q to quit)
+devready info     # what does this project need? (does not check)
+devready check    # can this machine run this project? the verdict
+devready port     # listening ports (macOS, via lsof)
 ```
 
-### `devscope` — Machine / Project Scope
+### `devready check` — the verdict
 
-Inside a terminal it re-collects and redraws every 2 seconds; press `q` (or `esc` / `Ctrl-C`) to quit, `r` to refresh immediately. When stdout is piped or redirected (not a terminal), it degrades to a single plain-text snapshot.
-
-```
-DevScope  my-mac
-
-SYSTEM
-
-  CPU     Apple M4  10 核
-          ███░░░░░░░░░░░░░░░░░░░░░  13%
-  LOAD    2.34  1.71  1.53
-
-  MEMORY  9.2 GB / 16.0 GB
-          ██████████████░░░░░░░░░░  58%
-
-  STORAGE
-  System               17.1 GB / 228 GB   █░░░░░░░░░░░░  7%
-  /Volumes/Data        2.1 GB / 931 GB    ░░░░░░░░░░░░░  <1%
-
-  NETWORK
-  en1                  ↓ 18.9 KB/s   ↑ 99.9 KB/s
-
-DEVELOPMENT
-  ✓ Git             2.54.0  (system)
-  ✓ Go              1.22.0  (asdf)
-  ✓ Python          3.12.0  (pyenv)
-  ✓ Docker          29.8.1  (system)
-  ✓ Docker Compose  2.24.0  (system)
-  ✓ LaTeX           XeLaTeX  (system)
-
-SERVICES
-  ○ sshd       未监听
-  ○ Docker     未运行
-```
-
-### `devscope info`
-
-```
-Project Information
-
-  project       devscope
-  type          Go
-
-REQUIREMENTS
-  Go         >= 1.22.0   (go.mod)
-```
-
-### `devscope check`
+Inside a project, this is the point of the tool: it reads the project's requirements and reports whether this machine satisfies each one.
 
 ```
 Checking project environment...
@@ -147,25 +103,73 @@ Check Summary
   Result: 1 passed · 1 failed
 ```
 
-### Degrade, don't fake
-
-If a tool is installed but not activated (e.g. Go is present but no version is selected), DevScope says so instead of pretending everything's fine:
+### `devready info`
 
 ```
-DevScope
+Project Information
+
+  project       devready
+  type          Go
+
+REQUIREMENTS
+  Go         >= 1.22.0   (go.mod)
+```
+
+### `devready` — the machine panel
+
+Inside a terminal it re-collects and redraws every 2 seconds; press `q` (or `esc` / `Ctrl-C`) to quit, `r` to refresh immediately. When stdout is piped or redirected (not a terminal), it degrades to a single plain-text snapshot.
+
+```
+DevReady  my-mac
+
+SYSTEM
+
+  CPU     Apple M4  10 核
+          ███░░░░░░░░░░░░░░░░░░░░░  13%
+  LOAD    2.34  1.71  1.53
+
+  MEMORY  9.2 GB / 16.0 GB
+          ██████████████░░░░░░░░░░  58%
+
+  STORAGE
+  System               17.1 GB / 228 GB   █░░░░░░░░░░░░  7%
+  /Volumes/Data        2.1 GB / 931 GB    ░░░░░░░░░░░░░  <1%
+
+  NETWORK
+  en1                  ↓ 18.9 KB/s   ↑ 99.9 KB/s
+
+DEVELOPMENT
+  ✓ Git             2.54.0  (system)
+  ✓ Go              1.22.0  (asdf)
+  ✓ Python          3.12.0  (pyenv)
+  ✓ Docker          29.8.1  (system)
+  ✓ Docker Compose  2.24.0  (system)
+  ✓ LaTeX           XeLaTeX  (system)
+
+SERVICES
+  ○ sshd       未监听
+  ○ Docker     未运行
+```
+
+### Degrade, don't fake
+
+If a tool is installed but not activated (e.g. Go is present but no version is selected), DevReady says so instead of pretending everything's fine:
+
+```
+DevReady
 
 DEVELOPMENT
   ○ Go  —  (不可用)
 ```
 
-This "degrade, don't fake" rule runs through the whole tool: data that can't be collected is reported as `○ SKIP` / unavailable, never as a fabricated zero.
+This "degrade, don't fake" rule runs through the whole tool: data that can't be collected is reported as `○ SKIP` / unavailable, never as a fabricated zero. A readiness verdict you can't trust is worse than no verdict.
 
 ## How it works
 
 ```
 Machine Scope (no project)          Project Scope (inside a project)
   System                              info  → what does it need?
-  Dev tools                           check → do I satisfy it?
+  Dev tools                           check → can this machine run it?
   Services
   Ports
 ```
@@ -181,22 +185,22 @@ ui → check → project / services / environment → system → versionmanager 
 ## Project layout
 
 ```
-cmd/devscope/             CLI entry point
+cmd/devready/             CLI entry point
 internal/domain/          plain data types (no dependencies)
 internal/system/          system metric collectors (macOS backend)
 internal/services/        services & listening ports
-internal/versionmanager/  version-manager detection (asdf)
+internal/versionmanager/  version-manager detection (asdf, pyenv)
 internal/environment/     dev-tool state detection
 internal/project/         project detection & requirement parsing
 internal/version/         version comparison
-internal/check/           check engine
+internal/check/           check engine (the readiness verdict)
 internal/ui/              rendering & live panel (only layer using Bubble Tea / Lip Gloss)
 ```
 
 ## Roadmap
 
 - [ ] Linux backend
-- [ ] `devscope.yaml` explicit overrides
+- [ ] `devready.yaml` explicit overrides
 - [ ] Node / Rust project detection + `check`
 - [ ] compose `services` / `ports` parsing (needs a YAML parser)
 
