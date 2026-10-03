@@ -6,11 +6,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cjc/devscope/internal/check"
-	"github.com/cjc/devscope/internal/domain"
-	"github.com/cjc/devscope/internal/environment"
-	"github.com/cjc/devscope/internal/project"
-	"github.com/cjc/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devscope/internal/check"
+	"github.com/Carlos-CJC/devscope/internal/domain"
+	"github.com/Carlos-CJC/devscope/internal/environment"
+	"github.com/Carlos-CJC/devscope/internal/project"
+	"github.com/Carlos-CJC/devscope/internal/versionmanager"
 )
 
 func main() {

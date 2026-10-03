@@ -7,8 +7,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/cjc/devscope/internal/domain"
-	"github.com/cjc/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devscope/internal/domain"
+	"github.com/Carlos-CJC/devscope/internal/versionmanager"
 )
 
 // DetectGo 侦测 Go 的安装位置、版本管理器与当前生效版本。

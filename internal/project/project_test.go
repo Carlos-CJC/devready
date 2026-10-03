@@ -23,7 +23,7 @@ func TestParseGoMod(t *testing.T) {
 		wantModule string
 		wantGo     string
 	}{
-		{"基础", "module github.com/cjc/devscope\n\ngo 1.22.0\n", "github.com/cjc/devscope", "1.22.0"},
+		{"基础", "module github.com/Carlos-CJC/devscope\n\ngo 1.22.0\n", "github.com/Carlos-CJC/devscope", "1.22.0"},
 		{"行内注释", "module x\n\ngo 1.22 // pinned\n", "x", "1.22"},
 		{"无 go 指令", "module x\n", "x", ""},
 		{"空内容", "", "", ""},
@@ -40,7 +40,7 @@ func TestParseGoMod(t *testing.T) {
 
 func TestDetectInGoMod(t *testing.T) {
 	dir := t.TempDir()
-	write(t, dir, "go.mod", "module github.com/cjc/devscope\n\ngo 1.22.0\n")
+	write(t, dir, "go.mod", "module github.com/Carlos-CJC/devscope\n\ngo 1.22.0\n")
 
 	p, ok := Detect(dir)
 	if !ok {

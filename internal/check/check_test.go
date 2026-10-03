@@ -3,8 +3,8 @@ package check
 import (
 	"testing"
 
-	"github.com/cjc/devscope/internal/domain"
-	"github.com/cjc/devscope/internal/project"
+	"github.com/Carlos-CJC/devscope/internal/domain"
+	"github.com/Carlos-CJC/devscope/internal/project"
 )
 
 func TestGoVersion(t *testing.T) {

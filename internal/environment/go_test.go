@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cjc/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devscope/internal/versionmanager"
 )
 
 // fakeRunner 依据完整命令行返回预设输出;值为空串视为命令失败。
