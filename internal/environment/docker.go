@@ -30,3 +30,26 @@ func parseDockerVersion(out string) string {
 	}
 	return ""
 }
+
+var composeSpec = spec{
+	name:        "Docker Compose",
+	command:     "docker",
+	plugin:      "docker-compose",
+	versionArgs: []string{"compose", "version"},
+	parse:       parseComposeVersion,
+}
+
+// DetectDockerCompose 侦测 `docker compose` 子命令是否可用及其版本。
+func DetectDockerCompose(ctx context.Context, run versionmanager.Runner) domain.ToolVersion {
+	return detect(ctx, run, composeSpec, lookPath("docker"))
+}
+
+// parseComposeVersion 从 `docker compose version` 取版本,
+// 例如 "Docker Compose version v2.24.0" -> "2.24.0"。
+func parseComposeVersion(out string) string {
+	f := strings.Fields(out)
+	if len(f) >= 4 && f[0] == "Docker" && f[1] == "Compose" {
+		return strings.TrimPrefix(f[3], "v")
+	}
+	return ""
+}
