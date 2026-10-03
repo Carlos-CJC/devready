@@ -143,10 +143,6 @@ internal/version/         版本比较
 internal/check/           检查引擎
 ```
 
-## 设计文档
-
-完整设计见 [introduction.md](introduction.md):两种 Scope、检查状态机(PASS/FAIL/WARN/SKIP)、需求推断规则表、架构、路线图、风险点与非目标。
-
 ## 路线图
 
 - [ ] `devscope port`

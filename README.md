@@ -145,10 +145,6 @@ internal/version/         version comparison
 internal/check/           check engine
 ```
 
-## Design doc
-
-The full design lives in [introduction.md](introduction.md) (Chinese): the two scopes, the check state machine (PASS/FAIL/WARN/SKIP), the requirement-inference rule table, architecture, roadmap, risks and non-goals.
-
 ## Roadmap
 
 - [ ] `devscope port`
