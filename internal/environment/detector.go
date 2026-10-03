@@ -31,6 +31,14 @@ func detect(ctx context.Context, run versionmanager.Runner, sp spec, path string
 		if v, src, err := versionmanager.ActiveVersion(ctx, run, sp.plugin); err == nil {
 			info.Active, info.Source = v, src
 		}
+	case versionmanager.IsPyenvShim(path):
+		info.Manager = versionmanager.ManagerPyenv
+		if versions, err := versionmanager.PyenvInstalled(ctx, run); err == nil {
+			info.Installed = versions
+		}
+		if v, src, err := versionmanager.PyenvActive(ctx, run); err == nil {
+			info.Active, info.Source = v, src
+		}
 	case path != "":
 		info.Manager = "system"
 	}
