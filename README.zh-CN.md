@@ -40,13 +40,13 @@ DevScope **不是** `btop`、`lazygit` 或 `lazydocker` 的替代品,它回答�
 需要 Go 1.22+。
 
 ```bash
-go install github.com/cjc/devscope/cmd/devscope@latest
+go install github.com/Carlos-CJC/devscope/cmd/devscope@latest
 ```
 
 或从源码构建:
 
 ```bash
-git clone https://github.com/cjc/devscope
+git clone https://github.com/Carlos-CJC/devscope
 cd devscope
 go build -o devscope ./cmd/devscope
 ```

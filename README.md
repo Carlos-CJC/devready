@@ -42,13 +42,13 @@ Early and in progress. What works today:
 Requires Go 1.22+.
 
 ```bash
-go install github.com/cjc/devscope/cmd/devscope@latest
+go install github.com/Carlos-CJC/devscope/cmd/devscope@latest
 ```
 
 Or from source:
 
 ```bash
-git clone https://github.com/cjc/devscope
+git clone https://github.com/Carlos-CJC/devscope
 cd devscope
 go build -o devscope ./cmd/devscope
 ```
