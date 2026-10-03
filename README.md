@@ -34,8 +34,8 @@ Early and in progress. What works today:
 | Go: project detection (`go.mod`) + version requirement parsing | ✅ |
 | Go: environment detection (installed / active version, asdf-aware) | ✅ |
 | Go: version check → PASS/FAIL/WARN/SKIP + summary | ✅ |
+| Live panel (TUI, Bubble Tea / Lip Gloss) | ✅ |
 | Other tools (Python / Docker / LaTeX / PlatformIO) detection | ⬜ planned |
-| TUI (Bubble Tea / Lip Gloss) | ⬜ planned |
 | Linux backend (metrics degrade to SKIP today) | ⬜ planned |
 
 ## Install
@@ -57,13 +57,15 @@ go build -o devscope ./cmd/devscope
 ## Usage
 
 ```bash
-devscope          # machine / project overview
+devscope          # live panel (refreshes every 2s, q to quit)
 devscope info     # show project requirements (does not check)
 devscope check    # check the environment against requirements
 devscope port     # listening ports (macOS, via lsof)
 ```
 
 ### `devscope` — Machine / Project Scope
+
+Inside a terminal it re-collects and redraws every 2 seconds; press `q` (or `esc` / `Ctrl-C`) to quit, `r` to refresh immediately. When stdout is piped or redirected (not a terminal), it degrades to a single plain-text snapshot.
 
 ```
 DevScope  my-mac
@@ -164,13 +166,13 @@ internal/environment/     dev-tool state detection
 internal/project/         project detection & requirement parsing
 internal/version/         version comparison
 internal/check/           check engine
+internal/ui/              rendering & live panel (only layer using Bubble Tea / Lip Gloss)
 ```
 
 ## Roadmap
 
 - [ ] Python / Docker / LaTeX / PlatformIO detection
 - [ ] `check` for the tools above
-- [ ] TUI (Bubble Tea / Lip Gloss)
 - [ ] Linux backend
 - [ ] `devscope.yaml` explicit overrides
 

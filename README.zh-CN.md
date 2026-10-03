@@ -32,8 +32,8 @@ DevScope **不是** `btop`、`lazygit` 或 `lazydocker` 的替代品,它回答�
 | Go:项目识别(`go.mod`)+ 版本需求解析 | ✅ |
 | Go:环境侦测(已装/激活版本,识别 asdf) | ✅ |
 | Go:版本检查 → PASS/FAIL/WARN/SKIP + 汇总 | ✅ |
+| 实时面板(TUI,Bubble Tea / Lip Gloss) | ✅ |
 | 其它工具(Python / Docker / LaTeX / PlatformIO)侦测 | ⬜ 计划中 |
-| TUI(Bubble Tea / Lip Gloss) | ⬜ 计划中 |
 | Linux 后端(当前指标诚实降级为 SKIP) | ⬜ 计划中 |
 
 ## 安装
@@ -55,13 +55,16 @@ go build -o devscope ./cmd/devscope
 ## 用法
 
 ```bash
-devscope          # 机器 / 项目概况
+devscope          # 实时面板(每 2 秒刷新,按 q 退出)
 devscope info     # 查看项目要求(不执行检查)
 devscope check    # 检查当前环境是否满足要求
 devscope port     # 监听端口(macOS,经 lsof)
 ```
 
 ### `devscope` —— Machine / Project Scope
+
+终端内每 2 秒自动重采并刷新,按 `q`(或 `esc` / `Ctrl-C`)退出,按 `r` 立即刷新。
+输出被管道或重定向时(非终端),自动降级为单次快照的纯文本。
 
 ```
 DevScope  my-mac
@@ -162,13 +165,13 @@ internal/environment/     开发工具状态侦测
 internal/project/         项目识别与需求解析
 internal/version/         版本比较
 internal/check/           检查引擎
+internal/ui/              渲染与实时面板(唯一依赖 Bubble Tea / Lip Gloss 的层)
 ```
 
 ## 路线图
 
 - [ ] Python / Docker / LaTeX / PlatformIO 侦测
 - [ ] 上述工具的 `check`
-- [ ] TUI(Bubble Tea / Lip Gloss)
 - [ ] Linux 后端
 - [ ] `devscope.yaml` 显式覆盖
 
