@@ -10,6 +10,7 @@ import (
 	"github.com/Carlos-CJC/devscope/internal/domain"
 	"github.com/Carlos-CJC/devscope/internal/environment"
 	"github.com/Carlos-CJC/devscope/internal/project"
+	"github.com/Carlos-CJC/devscope/internal/services"
 	"github.com/Carlos-CJC/devscope/internal/system"
 	"github.com/Carlos-CJC/devscope/internal/versionmanager"
 )
@@ -32,7 +33,7 @@ func main() {
 	case "check":
 		runCheck(ctx, dir)
 	case "port":
-		fmt.Println("devscope port:尚未实现(见设计文档 §7)")
+		runPort(ctx)
 	case "help", "-h", "--help":
 		usage()
 	default:
@@ -49,7 +50,7 @@ func usage() {
   devscope          查看机器 / 项目概况
   devscope info     查看项目环境要求
   devscope check    检查当前环境是否满足项目要求
-  devscope port     查看监听端口(尚未实现)
+  devscope port     查看监听端口
 `)
 }
 
@@ -76,6 +77,59 @@ func runDashboard(ctx context.Context, dir string) {
 	goInfo := environment.DetectGo(ctx, versionmanager.ExecRunner)
 	fmt.Println("DEVELOPMENT")
 	fmt.Printf("  %s Go  %s\n", toolMark(goInfo), versionLabel(goInfo))
+	fmt.Println()
+
+	renderServices(ctx)
+}
+
+// renderServices 渲染 Machine Scope 的 SERVICES 区块(§7),数据来自监听端口与本机事实。
+func renderServices(ctx context.Context) {
+	fmt.Println("SERVICES")
+	ports, err := services.ListeningPorts(ctx, versionmanager.ExecRunner)
+	svcs := services.Detect(ports)
+	if err != nil {
+		// 读不到端口时,sshd 状态无从判断,如实标注而非默认"未运行"。
+		for i := range svcs {
+			if svcs[i].Name == "sshd" {
+				svcs[i].Detail = "无法读取端口"
+			}
+		}
+	}
+	for _, s := range svcs {
+		mark := "○"
+		if s.Running {
+			mark = "●"
+		}
+		fmt.Printf("  %s %-10s %s\n", mark, s.Name, s.Detail)
+	}
+}
+
+// runPort 对应设计文档 §7:把监听端口翻译成"这台机器现在有哪些服务在工作"。
+func runPort(ctx context.Context) {
+	ports, err := services.ListeningPorts(ctx, versionmanager.ExecRunner)
+	if err != nil {
+		fmt.Println("无法列出监听端口:" + err.Error())
+		return
+	}
+
+	fmt.Println("Listening Ports")
+	fmt.Println()
+	if len(ports) == 0 {
+		fmt.Println("  (无监听端口)")
+		return
+	}
+	for _, p := range ports {
+		owner := p.Process
+		if owner == "" {
+			owner = "?"
+		}
+		line := fmt.Sprintf("  %-8s %s", fmt.Sprintf(":%d", p.Port), owner)
+		if p.Docker {
+			line += "  (Docker 映射)"
+		}
+		fmt.Println(line)
+	}
+	fmt.Println()
 }
 
 // renderSystem 渲染 Machine Scope 的 SYSTEM 区块(§5)。采集不到的指标显示为 ○,不伪造。
