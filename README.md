@@ -29,7 +29,7 @@ Early and in progress. What works today:
 |---|---|
 | CLI: `devscope` / `info` / `check` / `port` | ✅ |
 | Machine Scope: CPU / memory / disk / network (macOS) | ✅ |
-| Machine Scope: dev tools (Git, Go) + services (sshd, Docker) | ✅ |
+| Machine Scope: dev tools (Git, Go, Docker) + services (sshd, Docker) | ✅ |
 | `devscope port`: listening ports via `lsof` | ✅ |
 | Go: project detection (`go.mod`) + version requirement parsing | ✅ |
 | Go: environment detection (installed / active version, asdf-aware) | ✅ |
@@ -87,6 +87,7 @@ SYSTEM
 DEVELOPMENT
   ✓ Git    2.54.0  (system)
   ✓ Go     1.22.0  (asdf)
+  ✓ Docker 29.8.1  (system)
 
 SERVICES
   ○ sshd       未监听

@@ -27,7 +27,7 @@ DevScope **不是** `btop`、`lazygit` 或 `lazydocker` 的替代品,它回答�
 |---|---|
 | CLI:`devscope` / `info` / `check` / `port` | ✅ |
 | Machine Scope:CPU / 内存 / 磁盘 / 网络(macOS) | ✅ |
-| Machine Scope:开发工具(Git、Go)+ 服务(sshd、Docker) | ✅ |
+| Machine Scope:开发工具(Git、Go、Docker)+ 服务(sshd、Docker) | ✅ |
 | `devscope port`:经 `lsof` 列出监听端口 | ✅ |
 | Go:项目识别(`go.mod`)+ 版本需求解析 | ✅ |
 | Go:环境侦测(已装/激活版本,识别 asdf) | ✅ |
@@ -85,6 +85,7 @@ SYSTEM
 DEVELOPMENT
   ✓ Git    2.54.0  (system)
   ✓ Go     1.22.0  (asdf)
+  ✓ Docker 29.8.1  (system)
 
 SERVICES
   ○ sshd       未监听
