@@ -75,11 +75,25 @@ func runDashboard(ctx context.Context, dir string) {
 	renderSystem(st)
 
 	fmt.Println("DEVELOPMENT")
-	fmt.Println(toolLine(environment.DetectGit(ctx, versionmanager.ExecRunner)))
-	fmt.Println(toolLine(environment.DetectGo(ctx, versionmanager.ExecRunner)))
+	for _, t := range detectTools(ctx) {
+		if t.Path == "" && t.Active == "" {
+			continue // 未安装:Machine Scope 只回答"有没有装"(§6),不逐一罗列缺失项
+		}
+		fmt.Println(toolLine(t))
+	}
 	fmt.Println()
 
 	renderServices(ctx)
+}
+
+// detectTools 依次侦测 Machine Scope 关注的开发工具(§6)。
+func detectTools(ctx context.Context) []domain.ToolVersion {
+	run := versionmanager.ExecRunner
+	return []domain.ToolVersion{
+		environment.DetectGit(ctx, run),
+		environment.DetectGo(ctx, run),
+		environment.DetectDocker(ctx, run),
+	}
 }
 
 // toolLine 渲染一行开发工具状态,如 "  ✓ Go     1.22.0  (asdf)"。
