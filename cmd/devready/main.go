@@ -6,13 +6,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Carlos-CJC/devscope/internal/check"
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/environment"
-	"github.com/Carlos-CJC/devscope/internal/project"
-	"github.com/Carlos-CJC/devscope/internal/services"
-	"github.com/Carlos-CJC/devscope/internal/ui"
-	"github.com/Carlos-CJC/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devready/internal/check"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/environment"
+	"github.com/Carlos-CJC/devready/internal/project"
+	"github.com/Carlos-CJC/devready/internal/services"
+	"github.com/Carlos-CJC/devready/internal/ui"
+	"github.com/Carlos-CJC/devready/internal/versionmanager"
 )
 
 func main() {

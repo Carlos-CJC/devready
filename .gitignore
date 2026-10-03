@@ -1,5 +1,5 @@
 # 编译产物
-/devscope
+/devready
 *.exe
 *.test
 *.out
