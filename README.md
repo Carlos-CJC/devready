@@ -6,7 +6,7 @@
 
 **English** | [中文](README.zh-CN.md)
 
-> ⚠️ **Early stage.** The Machine Scope panel (macOS) and the Go check in Project Scope work today. See [Status](#status).
+> ⚠️ **Early stage.** The Machine Scope panel (macOS) and the Go / Python / Docker / PlatformIO checks in Project Scope work today. See [Status](#status).
 
 ## What it is
 
@@ -29,13 +29,17 @@ Early and in progress. What works today:
 |---|---|
 | CLI: `devscope` / `info` / `check` / `port` | ✅ |
 | Machine Scope: CPU / memory / disk / network (macOS) | ✅ |
-| Machine Scope: dev tools (Git, Go, Docker) + services (sshd, Docker) | ✅ |
+| Machine Scope: dev tools (Git, Go, Python, Docker, Docker Compose, LaTeX) + services | ✅ |
 | `devscope port`: listening ports via `lsof` | ✅ |
 | Go: project detection (`go.mod`) + version requirement parsing | ✅ |
 | Go: environment detection (installed / active version, asdf-aware) | ✅ |
-| Go: version check → PASS/FAIL/WARN/SKIP + summary | ✅ |
+| Python: project detection (`pyproject.toml` / `requirements.txt`) + env markers | ✅ |
+| Python: environment detection (pyenv-aware) + version check | ✅ |
+| Docker / Docker Compose: project detection (Dockerfile / compose) + availability check | ✅ |
+| LaTeX: detection (xelatex) | ✅ |
+| PlatformIO: project detection (`platformio.ini`) + availability check | ✅ |
+| Go / Python version check → PASS/FAIL/WARN/SKIP + summary | ✅ |
 | Live panel (TUI, Bubble Tea / Lip Gloss) | ✅ |
-| Other tools (Python / Docker / LaTeX / PlatformIO) detection | ⬜ planned |
 | Linux backend (metrics degrade to SKIP today) | ⬜ planned |
 
 ## Install
@@ -87,9 +91,12 @@ SYSTEM
   en1                  ↓ 18.9 KB/s   ↑ 99.9 KB/s
 
 DEVELOPMENT
-  ✓ Git    2.54.0  (system)
-  ✓ Go     1.22.0  (asdf)
-  ✓ Docker 29.8.1  (system)
+  ✓ Git             2.54.0  (system)
+  ✓ Go              1.22.0  (asdf)
+  ✓ Python          3.12.0  (pyenv)
+  ✓ Docker          29.8.1  (system)
+  ✓ Docker Compose  2.24.0  (system)
+  ✓ LaTeX           XeLaTeX  (system)
 
 SERVICES
   ○ sshd       未监听
@@ -121,6 +128,23 @@ Check Summary
   Go               ✓ PASS   1.22.0
 
   Result: 1 passed
+```
+
+Python, Docker and PlatformIO projects work the same way. When a requirement only says "this tool is needed" without a version, it degrades to `⚠ WARN` rather than faking a pass:
+
+```
+Checking project environment...
+
+✗ Python  3.9.6  (低于要求的 3.11;已装 3.12.0 但未激活)
+✓ Docker  29.8.1
+
+Check Summary
+
+  Requirement      Status     Current
+  Python           ✗ FAIL   3.9.6
+  Docker           ✓ PASS   29.8.1
+
+  Result: 1 passed · 1 failed
 ```
 
 ### Degrade, don't fake
@@ -171,10 +195,10 @@ internal/ui/              rendering & live panel (only layer using Bubble Tea / 
 
 ## Roadmap
 
-- [ ] Python / Docker / LaTeX / PlatformIO detection
-- [ ] `check` for the tools above
 - [ ] Linux backend
 - [ ] `devscope.yaml` explicit overrides
+- [ ] Node / Rust project detection + `check`
+- [ ] compose `services` / `ports` parsing (needs a YAML parser)
 
 ## License
 

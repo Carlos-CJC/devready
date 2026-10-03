@@ -6,7 +6,7 @@
 
 [English](README.md) | **中文**
 
-> ⚠️ **早期阶段。** Machine Scope(本机系统面板,macOS)与 Project Scope 的 Go 检查已可用,详见[状态](#状态)。
+> ⚠️ **早期阶段。** Machine Scope(本机系统面板,macOS)与 Project Scope 的 Go / Python / Docker / PlatformIO 检查已可用,详见[状态](#状态)。
 
 ## 这是什么
 
@@ -27,13 +27,17 @@ DevScope **不是** `btop`、`lazygit` 或 `lazydocker` 的替代品,它回答�
 |---|---|
 | CLI:`devscope` / `info` / `check` / `port` | ✅ |
 | Machine Scope:CPU / 内存 / 磁盘 / 网络(macOS) | ✅ |
-| Machine Scope:开发工具(Git、Go、Docker)+ 服务(sshd、Docker) | ✅ |
+| Machine Scope:开发工具(Git、Go、Python、Docker、Docker Compose、LaTeX)+ 服务 | ✅ |
 | `devscope port`:经 `lsof` 列出监听端口 | ✅ |
 | Go:项目识别(`go.mod`)+ 版本需求解析 | ✅ |
 | Go:环境侦测(已装/激活版本,识别 asdf) | ✅ |
-| Go:版本检查 → PASS/FAIL/WARN/SKIP + 汇总 | ✅ |
+| Python:项目识别(`pyproject.toml` / `requirements.txt`)+ 环境标记 | ✅ |
+| Python:环境侦测(识别 pyenv)+ 版本检查 | ✅ |
+| Docker / Docker Compose:项目识别(Dockerfile / compose)+ 可用性检查 | ✅ |
+| LaTeX:侦测(xelatex) | ✅ |
+| PlatformIO:项目识别(`platformio.ini`)+ 可用性检查 | ✅ |
+| Go / Python 版本检查 → PASS/FAIL/WARN/SKIP + 汇总 | ✅ |
 | 实时面板(TUI,Bubble Tea / Lip Gloss) | ✅ |
-| 其它工具(Python / Docker / LaTeX / PlatformIO)侦测 | ⬜ 计划中 |
 | Linux 后端(当前指标诚实降级为 SKIP) | ⬜ 计划中 |
 
 ## 安装
@@ -86,9 +90,12 @@ SYSTEM
   en1             ↓ 18.9 KB/s   ↑ 99.9 KB/s
 
 DEVELOPMENT
-  ✓ Git    2.54.0  (system)
-  ✓ Go     1.22.0  (asdf)
-  ✓ Docker 29.8.1  (system)
+  ✓ Git             2.54.0  (system)
+  ✓ Go              1.22.0  (asdf)
+  ✓ Python          3.12.0  (pyenv)
+  ✓ Docker          29.8.1  (system)
+  ✓ Docker Compose  2.24.0  (system)
+  ✓ LaTeX           XeLaTeX  (system)
 
 SERVICES
   ○ sshd       未监听
@@ -120,6 +127,24 @@ Check Summary
   Go               ✓ PASS   1.22.0
 
   Result: 1 passed
+```
+
+Python、Docker、PlatformIO 项目同样支持。需求只声明"需要某工具"而未给版本时,
+如实降级为 `⚠ WARN` 而非伪造通过:
+
+```
+Checking project environment...
+
+✗ Python  3.9.6  (低于要求的 3.11;已装 3.12.0 但未激活)
+✓ Docker  29.8.1
+
+Check Summary
+
+  Requirement      Status     Current
+  Python           ✗ FAIL   3.9.6
+  Docker           ✓ PASS   29.8.1
+
+  Result: 1 passed · 1 failed
 ```
 
 ### 降级而非伪造
@@ -170,10 +195,10 @@ internal/ui/              渲染与实时面板(唯一依赖 Bubble Tea / Lip Gl
 
 ## 路线图
 
-- [ ] Python / Docker / LaTeX / PlatformIO 侦测
-- [ ] 上述工具的 `check`
 - [ ] Linux 后端
 - [ ] `devscope.yaml` 显式覆盖
+- [ ] Node / Rust 项目识别与 `check`
+- [ ] compose `services` / `ports` 解析(需引入 YAML 解析)
 
 ## 许可证
 
