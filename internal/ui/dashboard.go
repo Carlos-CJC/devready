@@ -167,7 +167,7 @@ func renderDevelopment(b *strings.Builder, tools []domain.ToolVersion) {
 		if t.Active != "" {
 			mark, style = "✓", styleGood
 		}
-		fmt.Fprintf(b, "  %s %-6s %s\n", style.Render(mark), t.Name, versionLabel(t))
+		fmt.Fprintf(b, "  %s %-15s %s\n", style.Render(mark), t.Name, versionLabel(t))
 	}
 	b.WriteString("\n")
 }
