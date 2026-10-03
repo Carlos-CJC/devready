@@ -43,7 +43,7 @@ func TestParseList(t *testing.T) {
 
 func TestParseCurrent(t *testing.T) {
 	const withVersion = "Name            Version         Source                                      Installed\n" +
-		"golang          1.22.0          /Volumes/Data/projects/go_project/devscope/.tool-versions true\n"
+		"golang          1.22.0          /Volumes/Data/projects/go_project/devready/.tool-versions true\n"
 	const unset = "Name            Version         Source          Installed\n" +
 		"golang          ______          ______          \n"
 
@@ -53,7 +53,7 @@ func TestParseCurrent(t *testing.T) {
 		wantVer    string
 		wantSource string
 	}{
-		{"已设置", withVersion, "1.22.0", "/Volumes/Data/projects/go_project/devscope/.tool-versions"},
+		{"已设置", withVersion, "1.22.0", "/Volumes/Data/projects/go_project/devready/.tool-versions"},
 		{"未设置", unset, "", ""},
 		{"空输出", "", "", ""},
 	}

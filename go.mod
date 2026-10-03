@@ -1,4 +1,4 @@
-module github.com/Carlos-CJC/devscope
+module github.com/Carlos-CJC/devready
 
 go 1.22.0
 

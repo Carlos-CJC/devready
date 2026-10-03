@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/domain"
 )
 
 func TestParseCPUModel(t *testing.T) {

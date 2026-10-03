@@ -11,8 +11,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/versionmanager"
 )
 
 // ListeningPorts 列出本机监听中的 TCP 端口。

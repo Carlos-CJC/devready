@@ -7,8 +7,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/versionmanager"
 )
 
 // netInterval 是两次采样的间隔,用于把累计字节数换算成速率。

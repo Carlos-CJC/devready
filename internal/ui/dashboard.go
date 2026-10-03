@@ -9,12 +9,12 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"golang.org/x/term"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/environment"
-	"github.com/Carlos-CJC/devscope/internal/project"
-	"github.com/Carlos-CJC/devscope/internal/services"
-	"github.com/Carlos-CJC/devscope/internal/system"
-	"github.com/Carlos-CJC/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/environment"
+	"github.com/Carlos-CJC/devready/internal/project"
+	"github.com/Carlos-CJC/devready/internal/services"
+	"github.com/Carlos-CJC/devready/internal/system"
+	"github.com/Carlos-CJC/devready/internal/versionmanager"
 )
 
 // Snapshot 是一次 Dashboard 采集的完整快照,是渲染层的唯一输入(见设计文档 §16)。

@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/domain"
 )
 
 // 本文件只做纯解析:输入是系统命令的标准输出,输出是领域类型。

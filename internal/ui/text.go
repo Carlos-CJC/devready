@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/domain"
 	"github.com/charmbracelet/lipgloss"
 )
 

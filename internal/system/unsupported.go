@@ -5,8 +5,8 @@ package system
 import (
 	"context"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/versionmanager"
 )
 
 // 非 darwin 平台暂未实现采集,一律诚实降级为 Unavailable(见设计文档 §0、§2.5)。

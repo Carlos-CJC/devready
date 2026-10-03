@@ -6,9 +6,9 @@ package check
 import (
 	"strings"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/project"
-	"github.com/Carlos-CJC/devscope/internal/version"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/project"
+	"github.com/Carlos-CJC/devready/internal/version"
 )
 
 // Tools 是检查所需的工具状态快照。

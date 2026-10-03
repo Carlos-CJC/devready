@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/versionmanager"
 )
 
 // collectTimeout 限制单个采集器的最长耗时,避免任一指标卡住整个 Dashboard。

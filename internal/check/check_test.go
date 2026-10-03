@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/project"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/project"
 )
 
 func TestGoVersion(t *testing.T) {

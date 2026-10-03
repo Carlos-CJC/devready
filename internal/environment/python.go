@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/versionmanager"
 )
 
 var pythonSpec = spec{

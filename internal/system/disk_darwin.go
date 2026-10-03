@@ -5,8 +5,8 @@ package system
 import (
 	"context"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/versionmanager"
 )
 
 // collectDisks 通过 `df -k -P` 列出本地磁盘容量。

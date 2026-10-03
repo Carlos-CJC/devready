@@ -5,8 +5,8 @@ package system
 import (
 	"context"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/versionmanager"
 )
 
 // collectCPU 通过 sysctl 读取型号 / 核心数 / 负载,通过 top 取实时利用率。

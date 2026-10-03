@@ -3,7 +3,7 @@ package services
 import (
 	"os"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/domain"
 )
 
 // dockerSock 是 Docker 守护进程的默认套接字;存在即可判定 Docker 正在运行。

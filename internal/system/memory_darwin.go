@@ -5,8 +5,8 @@ package system
 import (
 	"context"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/versionmanager"
 )
 
 // collectMemory 读取物理内存总量与 vm_stat 页计数,计算已用 / 可回收。

@@ -4,8 +4,8 @@ import (
 	"context"
 	"os/exec"
 
-	"github.com/Carlos-CJC/devscope/internal/domain"
-	"github.com/Carlos-CJC/devscope/internal/versionmanager"
+	"github.com/Carlos-CJC/devready/internal/domain"
+	"github.com/Carlos-CJC/devready/internal/versionmanager"
 )
 
 // spec 描述如何侦测一个开发工具:命令名、asdf 插件名、版本参数与输出解析。

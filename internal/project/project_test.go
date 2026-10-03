@@ -23,7 +23,7 @@ func TestParseGoMod(t *testing.T) {
 		wantModule string
 		wantGo     string
 	}{
-		{"基础", "module github.com/Carlos-CJC/devscope\n\ngo 1.22.0\n", "github.com/Carlos-CJC/devscope", "1.22.0"},
+		{"基础", "module github.com/Carlos-CJC/devready\n\ngo 1.22.0\n", "github.com/Carlos-CJC/devready", "1.22.0"},
 		{"行内注释", "module x\n\ngo 1.22 // pinned\n", "x", "1.22"},
 		{"无 go 指令", "module x\n", "x", ""},
 		{"空内容", "", "", ""},
@@ -40,14 +40,14 @@ func TestParseGoMod(t *testing.T) {
 
 func TestDetectInGoMod(t *testing.T) {
 	dir := t.TempDir()
-	write(t, dir, "go.mod", "module github.com/Carlos-CJC/devscope\n\ngo 1.22.0\n")
+	write(t, dir, "go.mod", "module github.com/Carlos-CJC/devready\n\ngo 1.22.0\n")
 
 	p, ok := Detect(dir)
 	if !ok {
 		t.Fatal("Detect() found=false, want true")
 	}
-	if p.Name != "devscope" {
-		t.Errorf("Name = %q, want devscope", p.Name)
+	if p.Name != "devready" {
+		t.Errorf("Name = %q, want devready", p.Name)
 	}
 	if len(p.Types) != 1 || p.Types[0] != "Go" {
 		t.Errorf("Types = %#v, want [Go]", p.Types)
