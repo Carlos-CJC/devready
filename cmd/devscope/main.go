@@ -89,8 +89,7 @@ func runCheck(ctx context.Context, dir string) {
 		return
 	}
 
-	goInfo := environment.DetectGo(ctx, versionmanager.ExecRunner)
-	results := check.Run(proj, check.Tools{Go: goInfo})
+	results := check.Run(proj, collectTools(ctx, proj))
 
 	fmt.Println("Checking project environment...")
 	fmt.Println()
@@ -107,6 +106,29 @@ func runCheck(ctx context.Context, dir string) {
 	fmt.Println()
 
 	printSummary(results)
+}
+
+// collectTools 只侦测项目实际要求的工具,避免无关的外部命令开销。
+func collectTools(ctx context.Context, proj project.Project) check.Tools {
+	run := versionmanager.ExecRunner
+	var t check.Tools
+	for _, r := range proj.Requirements {
+		switch r.Kind {
+		case "go":
+			t.Go = environment.DetectGo(ctx, run)
+		case "python":
+			t.Python = environment.DetectPython(ctx, run)
+		case "docker":
+			t.Docker = environment.DetectDocker(ctx, run)
+		case "docker-compose":
+			t.Compose = environment.DetectDockerCompose(ctx, run)
+		case "latex":
+			t.LaTeX = environment.DetectLaTeX(ctx, run)
+		case "platformio":
+			t.PlatformIO = environment.DetectPlatformIO(ctx, run)
+		}
+	}
+	return t
 }
 
 func printSummary(results []domain.CheckResult) {

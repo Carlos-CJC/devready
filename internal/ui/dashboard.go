@@ -37,7 +37,11 @@ func Collect(ctx context.Context, dir string) Snapshot {
 	snap.Tools = []domain.ToolVersion{
 		environment.DetectGit(ctx, run),
 		environment.DetectGo(ctx, run),
+		environment.DetectPython(ctx, run),
 		environment.DetectDocker(ctx, run),
+		environment.DetectDockerCompose(ctx, run),
+		environment.DetectLaTeX(ctx, run),
+		environment.DetectPlatformIO(ctx, run),
 	}
 
 	ports, err := services.ListeningPorts(ctx, run)
