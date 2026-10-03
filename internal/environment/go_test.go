@@ -3,8 +3,6 @@ package environment
 import (
 	"context"
 	"fmt"
-	"os"
-	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -37,29 +35,13 @@ func TestParseGoVersion(t *testing.T) {
 	}
 }
 
-func TestParseGoMod(t *testing.T) {
-	cases := []struct{ name, in, want string }{
-		{"基础", "module x\n\ngo 1.22.0\n", "1.22.0"},
-		{"行内注释", "module x\n\ngo 1.22 // pinned\n", "1.22"},
-		{"无 go 指令", "module x\n", ""},
-		{"空内容", "", ""},
-	}
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			if got := ParseGoMod(c.in); got != c.want {
-				t.Errorf("ParseGoMod() = %q, want %q", got, c.want)
-			}
-		})
-	}
-}
-
 func TestDetectGoWithASDFActive(t *testing.T) {
 	run := fakeRunner(map[string]string{
 		"asdf list golang":    " *1.22.0\n",
 		"asdf current golang": "Name            Version         Source                     Installed\ngolang          1.22.0          /p/.tool-versions          true\n",
 		"go version":          "go version go1.22.0 darwin/arm64",
 	})
-	got := detectGoWith(context.Background(), run, "/Users/x/.asdf/shims/go", "")
+	got := detectGoWith(context.Background(), run, "/Users/x/.asdf/shims/go")
 
 	if got.Manager != versionmanager.ManagerASDF {
 		t.Errorf("Manager = %q, want asdf", got.Manager)
@@ -81,7 +63,7 @@ func TestDetectGoWithASDFNotSet(t *testing.T) {
 		"asdf current golang": "Name            Version         Source          Installed\ngolang          ______          ______          \n",
 		// "go version" 未提供 -> 模拟 shim 无版本时执行失败
 	})
-	got := detectGoWith(context.Background(), run, "/Users/x/.asdf/shims/go", "")
+	got := detectGoWith(context.Background(), run, "/Users/x/.asdf/shims/go")
 
 	if got.Manager != versionmanager.ManagerASDF {
 		t.Errorf("Manager = %q, want asdf", got.Manager)
@@ -97,18 +79,16 @@ func TestDetectGoWithASDFNotSet(t *testing.T) {
 	}
 }
 
-func TestDetectGoReadsGoMod(t *testing.T) {
-	dir := t.TempDir()
-	if err := os.WriteFile(filepath.Join(dir, "go.mod"), []byte("module x\n\ngo 1.22.0\n"), 0o644); err != nil {
-		t.Fatal(err)
-	}
+func TestDetectGoSystemPath(t *testing.T) {
 	run := fakeRunner(map[string]string{
-		"asdf list golang":    " *1.22.0\n",
-		"asdf current golang": "Name            Version         Source          Installed\ngolang          1.22.0          /p/.tool-versions true\n",
-		"go version":          "go version go1.22.0 darwin/arm64",
+		"go version": "go version go1.22.0 darwin/arm64",
 	})
-	got := detectGoWith(context.Background(), run, "/Users/x/.asdf/shims/go", dir)
-	if got.Required != "1.22.0" {
-		t.Errorf("Required = %q, want 1.22.0", got.Required)
+	got := detectGoWith(context.Background(), run, "/usr/local/go/bin/go")
+
+	if got.Manager != "system" {
+		t.Errorf("Manager = %q, want system", got.Manager)
+	}
+	if got.Active != "1.22.0" {
+		t.Errorf("Active = %q, want 1.22.0", got.Active)
 	}
 }

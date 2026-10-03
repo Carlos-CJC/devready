@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/cjc/devscope/internal/environment"
@@ -12,9 +11,8 @@ import (
 
 func main() {
 	ctx := context.Background()
-	dir, _ := os.Getwd()
 
-	info := environment.DetectGo(ctx, versionmanager.ExecRunner, dir)
+	info := environment.DetectGo(ctx, versionmanager.ExecRunner)
 
 	fmt.Println("DevScope · 开发环境")
 	fmt.Println()
@@ -25,9 +23,6 @@ func main() {
 	printField("来源", dash(info.Source))
 	printField("已安装", dash(strings.Join(info.Installed, ", ")))
 	printField("可执行", yesNo(info.Available))
-	if info.Required != "" {
-		printField("项目要求", info.Required+" (来自 go.mod)")
-	}
 }
 
 const labelWidth = 10 // 以终端显示宽度计(中文按 2 列)
