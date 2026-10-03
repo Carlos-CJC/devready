@@ -31,9 +31,6 @@ DevScope **不是** `btop`、`lazygit` 或 `lazydocker` 的替代品,它回答�
 | 其它工具(Git / Python / Docker / LaTeX / PlatformIO) | ⬜ 计划中 |
 | TUI(Bubble Tea / Lip Gloss) | ⬜ 计划中 |
 | Linux 后端 | ⬜ 计划中 |
-| 温度 / 功耗 / GPU 传感器 | ❌ 明确不做 |
-
-39 个单元测试,全部通过。
 
 ## 安装
 
@@ -151,19 +148,6 @@ internal/check/           检查引擎
 - [ ] TUI(Bubble Tea / Lip Gloss)
 - [ ] Linux 后端
 - [ ] `devscope.yaml` 显式覆盖
-
-## 非目标
-
-- 不做远程 / SSH / 多机聚合
-- 不采集温度 / 功耗 / 频率,不做 GPU 指标
-- 不替代 `btop` / `lazygit` / `lazydocker` / `lsof`
-- 不修改用户环境、不删除文件
-
-## 开发
-
-```bash
-go test ./...
-```
 
 ## 许可证
 

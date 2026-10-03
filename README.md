@@ -33,9 +33,6 @@ Early and in progress. What works today:
 | Other tools (Git / Python / Docker / LaTeX / PlatformIO) | ⬜ planned |
 | TUI (Bubble Tea / Lip Gloss) | ⬜ planned |
 | Linux backend | ⬜ planned |
-| Temperature / power / GPU sensors | ❌ out of scope |
-
-39 unit tests, all green.
 
 ## Install
 
@@ -153,19 +150,6 @@ internal/check/           check engine
 - [ ] TUI (Bubble Tea / Lip Gloss)
 - [ ] Linux backend
 - [ ] `devscope.yaml` explicit overrides
-
-## Non-goals
-
-- No remote / SSH / multi-machine aggregation
-- No temperature / power / frequency sensors, no GPU metrics
-- Not a replacement for `btop` / `lazygit` / `lazydocker` / `lsof`
-- Never modifies your environment or deletes files
-
-## Development
-
-```bash
-go test ./...
-```
 
 ## License
 
