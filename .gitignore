@@ -3,3 +3,6 @@
 *.exe
 *.test
 *.out
+
+# 本地设计文档,不推送到远端
+/introduction.md
