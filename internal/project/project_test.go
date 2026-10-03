@@ -83,3 +83,101 @@ func TestDetectNoProject(t *testing.T) {
 		t.Error("Detect() found=true, want false")
 	}
 }
+
+func TestParseRequiresPython(t *testing.T) {
+	cases := []struct{ in, want string }{
+		{"[project]\nrequires-python = \">=3.11\"\n", "3.11"},
+		{"requires-python = \"~=3.11.0\"", "3.11.0"},
+		{"requires-python=\"==3.12.*\"", "3.12"},
+		{"requires-python = '>=3.9'  # 注释", "3.9"},
+		{"[project]\nname = \"x\"", ""},
+		{"", ""},
+	}
+	for _, c := range cases {
+		if got := parseRequiresPython(c.in); got != c.want {
+			t.Errorf("parseRequiresPython(%q) = %q, want %q", c.in, got, c.want)
+		}
+	}
+}
+
+func TestDetectInPyproject(t *testing.T) {
+	dir := t.TempDir()
+	write(t, dir, "pyproject.toml", "[project]\nrequires-python = \">=3.11\"\n")
+
+	p, ok := Detect(dir)
+	if !ok {
+		t.Fatal("Detect() found=false, want true")
+	}
+	if len(p.Types) != 1 || p.Types[0] != "Python" {
+		t.Errorf("Types = %#v, want [Python]", p.Types)
+	}
+	if len(p.Requirements) != 1 {
+		t.Fatalf("Requirements = %#v, want 1 条", p.Requirements)
+	}
+	r := p.Requirements[0]
+	if r.Kind != "python" || r.Version != "3.11" || r.Source != "pyproject.toml" {
+		t.Errorf("Requirement = %#v, want {python Python 3.11 pyproject.toml}", r)
+	}
+}
+
+func TestDetectInRequirementsTxt(t *testing.T) {
+	dir := t.TempDir()
+	write(t, dir, "requirements.txt", "requests\n")
+
+	p, ok := Detect(dir)
+	if !ok {
+		t.Fatal("Detect() found=false, want true")
+	}
+	r := p.Requirements[0]
+	if r.Kind != "python" || r.Version != "" || r.Source != "requirements.txt" {
+		t.Errorf("Requirement = %#v, want {python Python \"\" requirements.txt}", r)
+	}
+}
+
+func TestDetectInDocker(t *testing.T) {
+	dir := t.TempDir()
+	write(t, dir, "Dockerfile", "FROM alpine\n")
+	write(t, dir, "compose.yml", "services: {}\n")
+
+	p, ok := Detect(dir)
+	if !ok {
+		t.Fatal("Detect() found=false, want true")
+	}
+	kinds := map[string]string{}
+	for _, r := range p.Requirements {
+		kinds[r.Kind] = r.Source
+	}
+	if kinds["docker"] != "Dockerfile" || kinds["docker-compose"] != "compose.yml" {
+		t.Errorf("Requirements = %#v, want docker=Dockerfile & docker-compose=compose.yml", p.Requirements)
+	}
+}
+
+func TestDetectInPlatformIO(t *testing.T) {
+	dir := t.TempDir()
+	write(t, dir, "platformio.ini", "[env:esp32]\n")
+
+	p, ok := Detect(dir)
+	if !ok {
+		t.Fatal("Detect() found=false, want true")
+	}
+	r := p.Requirements[0]
+	if r.Kind != "platformio" || r.Source != "platformio.ini" {
+		t.Errorf("Requirement = %#v, want platformio from platformio.ini", r)
+	}
+}
+
+func TestDetectPythonEnv(t *testing.T) {
+	dir := t.TempDir()
+	write(t, dir, "requirements.txt", "")
+	if err := os.MkdirAll(filepath.Join(dir, ".venv"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+
+	p, ok := Detect(dir)
+	if !ok {
+		t.Fatal("Detect() found=false, want true")
+	}
+	if p.PythonEnv != ".venv" {
+		t.Errorf("PythonEnv = %q, want .venv", p.PythonEnv)
+	}
+}
